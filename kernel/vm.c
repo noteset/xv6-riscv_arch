@@ -449,28 +449,35 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
 // that was lazily allocated in sys_sbrk().
 // returns 0 if va is invalid or already mapped, or if
 // out of physical memory, and physical address if successful.
-uint64
-vmfault(pagetable_t pagetable, uint64 va, int read)
+int
+vmfault(pagetable_t pagetable, uint64 va, int write)
 {
-  uint64 mem;
-  struct proc *p = myproc();
+    struct proc *p = myproc();
+    void *mem;
 
-  if (va >= p->sz)
+    if (va >= p->sz)
+        return -1;
+
+    va = PGROUNDDOWN(va);
+
+    // already mapped? then nothing to do
+    if (walkaddr(pagetable, va) != 0)
+        return 0;
+
+    mem = kalloc();
+    if (mem == 0)
+        return -1;
+
+    memset(mem, 0, PGSIZE);
+
+    if (mappages(pagetable, va, PGSIZE, (uint64)mem,
+                 PTE_R | PTE_W | PTE_X | PTE_U) != 0) {
+        kfree(mem);
+        return -1;
+    }
     return 0;
-  va = PGROUNDDOWN(va);
-  if(ismapped(pagetable, va)) {
-    return 0;
-  }
-  mem = (uint64) kalloc();
-  if(mem == 0)
-    return 0;
-  memset((void *) mem, 0, PGSIZE);
-  if (mappages(p->pagetable, va, PGSIZE, mem, PTE_W|PTE_U|PTE_R) != 0) {
-    kfree((void *)mem);
-    return 0;
-  }
-  return mem;
 }
+
 
 int
 ismapped(pagetable_t pagetable, uint64 va)
@@ -484,3 +491,5 @@ ismapped(pagetable_t pagetable, uint64 va)
   }
   return 0;
 }
+
+

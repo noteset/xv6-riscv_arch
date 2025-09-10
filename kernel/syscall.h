@@ -23,4 +23,5 @@
 #define SYS_pinfo  22
 
 #define SYS_setpriority  23
+#define SYS_getpagefaults 24
 

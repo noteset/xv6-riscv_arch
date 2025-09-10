@@ -135,5 +135,9 @@ sys_setpriority(void)
   myproc()->priority = priority; // assign to current process
   return 0;
 }
+uint64 sys_getpagefaults(void) {
+struct proc *p = myproc();
+return p->page_faults;
+}
 
 

@@ -145,6 +145,9 @@ UPROGS=\
 	$U/_pinfo\
 	$U/_testproc\
 	$U/_prioritytest\
+	$U/_tlbtest\
+	$U/_tlbrun
+
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

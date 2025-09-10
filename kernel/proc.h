@@ -106,6 +106,7 @@ struct proc {
   char name[16];               // Process name (debugging)
 
   int priority;               // Process priority (lower value = higher priority)
+int page_faults;          // Number of page faults
 };
 
 struct proc_info;

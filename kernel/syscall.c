@@ -103,6 +103,7 @@ extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_pinfo(void);
 extern uint64 sys_setpriority(void);
+extern uint64 sys_getpagefaults(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -130,6 +131,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_pinfo]   sys_pinfo,
 [SYS_setpriority] sys_setpriority,
+[SYS_getpagefaults] = sys_getpagefaults,
 };
 
 void

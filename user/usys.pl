@@ -44,3 +44,4 @@ entry("pause");
 entry("uptime");
 entry("pinfo");
 entry("setpriority");
+entry("getpagefaults");

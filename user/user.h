@@ -26,6 +26,7 @@ int pause(int);
 int uptime(void);
 // in user/user.h
 int setpriority(int);
+int getpagefaults(void);
 
 // ulib.c
 int stat(const char*, struct stat*);
